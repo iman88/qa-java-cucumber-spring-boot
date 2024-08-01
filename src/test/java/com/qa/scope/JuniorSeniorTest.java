@@ -1,10 +1,10 @@
 package com.qa.scope;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-public class JuniorSeniorTest extends SpringBaseTestNGTest {
+public class JuniorSeniorTest extends TestNGTest {
 
     @Autowired
     private JuniorEngg junior;

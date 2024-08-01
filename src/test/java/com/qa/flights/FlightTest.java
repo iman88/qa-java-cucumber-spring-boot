@@ -1,12 +1,12 @@
 package com.qa.flights;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import com.qa.page.flights.FlightPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class FlightTest extends SpringBaseTestNGTest {
+public class FlightTest extends TestNGTest {
 
     @Autowired
     private FlightPage flightPage;

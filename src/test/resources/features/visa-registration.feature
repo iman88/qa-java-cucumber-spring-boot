@@ -1,7 +1,8 @@
+@all
 Feature: User visa registration feature
 
   @visa
-  Scenario Outline: I should be able to submit visa form
+  Scenario Outline: I should be able to submit visa form - fromCountry: <fromCountry>
     Given I am on VISA registration form
     When I select my from country "<fromCountry>" and to country "<toCountry>"
     And I enter my dob as "<dateOfBirth>"

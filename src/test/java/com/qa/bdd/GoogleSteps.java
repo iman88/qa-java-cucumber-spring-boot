@@ -9,6 +9,8 @@ import com.qa.kelvin.annotation.LazyAutowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.Assert;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @CucumberContextConfiguration
 @SpringBootTest
 public class GoogleSteps {
@@ -21,6 +23,11 @@ public class GoogleSteps {
         this.googlePage.goTo();
     }
 
+    @When("I click on Accept All button")
+    public void iClickOnAcceptAllButton() {
+        this.googlePage.clickAcceptAllButton();
+    }
+
     @When("I enter {string} as a keyword")
     public void enterKeyword(String keyword) {
         this.googlePage.getSearchComponent().search(keyword);
@@ -28,12 +35,12 @@ public class GoogleSteps {
 
     @Then("I should see search results page")
     public void clickSearch() {
-        Assert.assertTrue(this.googlePage.getSearchResult().isAt());
+        assertThat(this.googlePage.getSearchResult().isAt()).isTrue();
     }
 
     @Then("I should see at least {int} results")
     public void verifyResults(int count) {
-        Assert.assertTrue(this.googlePage.getSearchResult().getCount() >= count);
+        assertThat(this.googlePage.getSearchResult().getCount()).isGreaterThanOrEqualTo(count);
     }
 
 }

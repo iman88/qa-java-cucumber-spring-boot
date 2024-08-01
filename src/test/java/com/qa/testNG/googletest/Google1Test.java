@@ -1,6 +1,6 @@
-package com.qa.googletest;
+package com.qa.testNG.googletest;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import com.qa.kelvin.annotation.LazyAutowired;
 import com.qa.kelvin.service.ScreenshotService;
 import com.qa.page.google.GooglePage;
@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class Google2Test extends SpringBaseTestNGTest {
+public class Google1Test extends TestNGTest {
 
     @LazyAutowired
     private GooglePage googlePage;
@@ -21,9 +21,9 @@ public class Google2Test extends SpringBaseTestNGTest {
     public void googleTest() throws IOException {
         this.googlePage.goTo();
         Assert.assertTrue(this.googlePage.isAt());
-        this.googlePage.getSearchComponent().search("selenium");
+        this.googlePage.getSearchComponent().search("spring boot");
         Assert.assertTrue(this.googlePage.getSearchResult().isAt());
-        Assert.assertTrue(this.googlePage.getSearchResult().getCount() > 25);
+        Assert.assertTrue(this.googlePage.getSearchResult().getCount() > 2);
         this.screenshotService.takeScreenShot();
         this.googlePage.close();
     }

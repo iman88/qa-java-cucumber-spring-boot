@@ -7,12 +7,12 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(
         features = "classpath:features",
         glue = "com.qa.bdd",
-        tags =  "@visa",
         plugin = {
                 "pretty",
                 "json:target/cucumber-report-json/report.json",
                 "html:target/cucumber-report-html/report.html"
-        }
+        },
+        tags =  "@all"
 )
 public class CucumberRunner extends AbstractTestNGCucumberTests {
 

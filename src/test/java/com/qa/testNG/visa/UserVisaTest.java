@@ -1,6 +1,6 @@
-package com.qa.visa;
+package com.qa.testNG.visa;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import com.qa.entity.Customer;
 import com.qa.page.visa.VisaRegistrationPage;
 import com.qa.repository.UserRepository;
@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 import java.sql.Date;
 
-public class UserVisaTest extends SpringBaseTestNGTest {
+public class UserVisaTest extends TestNGTest {
 
     private static final Logger logger = LoggerFactory.getLogger(UserVisaTest.class);
 

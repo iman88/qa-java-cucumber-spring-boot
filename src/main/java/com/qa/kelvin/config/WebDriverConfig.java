@@ -5,6 +5,7 @@ import com.qa.kelvin.annotation.ThreadScopeBean;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,7 +25,11 @@ public class WebDriverConfig {
     @ConditionalOnMissingBean
     public WebDriver chromeDriver(){
         WebDriverManager.chromedriver().setup();
-        return new ChromeDriver();
-    }
 
+        // Create ChromeOptions and add the desired argument
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-search-engine-choice-screen");
+
+        return new ChromeDriver(options);
+    }
 }

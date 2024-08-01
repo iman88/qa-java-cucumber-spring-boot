@@ -2,6 +2,9 @@ package com.qa.page.google;
 
 import com.qa.kelvin.annotation.Page;
 import com.qa.page.Base;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -14,11 +17,20 @@ public class GooglePage extends Base {
     @Autowired
     private SearchResult searchResult;
 
+    @FindBy(xpath = "//button[2]")
+    private WebElement acceptAllButton;
+
     @Value("${application.url}")
     private String url;
 
     public void goTo(){
         this.driver.get(url);
+    }
+
+    public void clickAcceptAllButton() {
+        if (this.acceptAllButton.isDisplayed()){
+            this.acceptAllButton.click();
+        }
     }
 
     public SearchComponent getSearchComponent() {
@@ -37,6 +49,7 @@ public class GooglePage extends Base {
     public void close(){
         this.driver.quit();
     }
+
 
 
 }

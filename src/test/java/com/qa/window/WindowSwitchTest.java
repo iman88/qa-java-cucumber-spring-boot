@@ -1,6 +1,6 @@
 package com.qa.window;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import com.qa.page.window.MainPage;
 import com.qa.page.window.PageA;
 import com.qa.page.window.PageB;
@@ -12,7 +12,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @TestPropertySource(properties = "browser=chrome")
-public class WindowSwitchTest extends SpringBaseTestNGTest {
+public class WindowSwitchTest extends TestNGTest {
 
     @Autowired
     private MainPage mainPage;

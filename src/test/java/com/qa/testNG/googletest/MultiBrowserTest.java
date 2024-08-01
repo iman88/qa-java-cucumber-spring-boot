@@ -1,12 +1,12 @@
-package com.qa.googletest;
+package com.qa.testNG.googletest;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.testng.annotations.Test;
 
-public class MultiBrowserTest extends SpringBaseTestNGTest {
+public class MultiBrowserTest extends TestNGTest {
 
     @Autowired
     private ApplicationContext ctx;

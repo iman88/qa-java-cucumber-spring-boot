@@ -1,6 +1,6 @@
 package com.qa.resource;
 
-import com.qa.SpringBaseTestNGTest;
+import com.qa.TestNGTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ResourceTest extends SpringBaseTestNGTest {
+public class ResourceTest extends TestNGTest {
 
     @Value("classpath:data/testdata.csv")
     private Resource resource;

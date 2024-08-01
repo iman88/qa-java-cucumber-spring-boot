@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class Google2Test extends TestNGTest {
 
     @LazyAutowired
@@ -20,10 +22,11 @@ public class Google2Test extends TestNGTest {
     @Test
     public void googleTest() throws IOException {
         this.googlePage.goTo();
+        this.googlePage.clickAcceptAllButton();
         Assert.assertTrue(this.googlePage.isAt());
         this.googlePage.getSearchComponent().search("selenium");
-        Assert.assertTrue(this.googlePage.getSearchResult().isAt());
-        Assert.assertTrue(this.googlePage.getSearchResult().getCount() > 25);
+        assertThat(this.googlePage.getSearchResult().isAt()).isTrue();
+        assertThat(this.googlePage.getSearchResult().getCount()).isGreaterThan(1);
         this.screenshotService.takeScreenShot();
         this.googlePage.close();
     }

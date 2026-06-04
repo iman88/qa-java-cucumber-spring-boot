@@ -1,6 +1,7 @@
 package com.qa.kelvin.service;
 
-import org.openqa.selenium.WebDriver;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -11,22 +12,15 @@ public class WindowSwitchService {
     @Autowired
     private ApplicationContext ctx;
 
-    public void switchByTitle(final String title){
-        WebDriver driver = this.ctx.getBean(WebDriver.class);
-        driver.getWindowHandles()
-                .stream()
-                .map(handle -> driver.switchTo().window(handle).getTitle())
-                .filter(t -> t.startsWith(title))
+    public Page getPageByTitle(final String title) {
+        BrowserContext context = ctx.getBean(BrowserContext.class);
+        return context.pages().stream()
+                .filter(p -> p.title().startsWith(title))
                 .findFirst()
-                .orElseThrow(() -> {
-                    throw new RuntimeException("No such window");
-                });
+                .orElseThrow(() -> new RuntimeException("No page with title starting: " + title));
     }
 
-    public void switchByIndex(final int index){
-        WebDriver driver = this.ctx.getBean(WebDriver.class);
-        String[] handles = driver.getWindowHandles().toArray(new String[0]);
-        driver.switchTo().window(handles[index]);
+    public Page getPageByIndex(final int index) {
+        return ctx.getBean(BrowserContext.class).pages().get(index);
     }
-
 }

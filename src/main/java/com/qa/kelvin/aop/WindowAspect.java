@@ -1,7 +1,9 @@
 package com.qa.kelvin.aop;
 
-import com.qa.kelvin.service.WindowSwitchService;
 import com.qa.kelvin.annotation.Window;
+import com.qa.kelvin.service.WindowSwitchService;
+import com.qa.page.Base;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -16,13 +18,13 @@ public class WindowAspect {
     private WindowSwitchService switchService;
 
     @Before("@target(window) && within(com.qa..*)")
-    public void before(Window window){
-        this.switchService.switchByTitle(window.value());
+    public void before(JoinPoint jp, Window window) {
+        ((Base) jp.getTarget()).setPage(switchService.getPageByTitle(window.value()));
     }
 
     @After("@target(window) && within(com.qa..*)")
-    public void after(Window window){
-        this.switchService.switchByIndex(0);
+    public void after(JoinPoint jp, Window window) {
+        Base base = (Base) jp.getTarget();
+        base.setPage(base.defaultPage());
     }
-
 }

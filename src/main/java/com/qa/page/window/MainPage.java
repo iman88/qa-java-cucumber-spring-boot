@@ -2,32 +2,28 @@ package com.qa.page.window;
 
 import com.qa.kelvin.annotation.Page;
 import com.qa.page.Base;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 @Page
 public class MainPage extends Base {
 
-    @FindBy(tagName = "a")
-    private List<WebElement> links;
+    @Value("${window.url}")
+    private String url;
 
-    public void goTo(){
-        this.driver.get("https://vins-udemy.s3.amazonaws.com/ds/window/main.html");
+    public void goTo() {
+        page.navigate(url);
     }
 
-    public void launchAllWindows(){
-        for (int i = 0; i < links.size(); i++) {
-            links.get(i).click();
-            this.wait.until(ExpectedConditions.numberOfWindowsToBe(i + 2));
+    public void launchAllWindows() {
+        int count = page.locator("a").count();
+        for (int i = 0; i < count; i++) {
+            final int index = i;
+            browserContext().waitForPage(() -> page.locator("a").nth(index).click());
         }
     }
 
     @Override
     public boolean isAt() {
-        return this.wait.until((d) -> !this.links.isEmpty());
+        return page.locator("a").first().isVisible();
     }
-
 }

@@ -1,10 +1,9 @@
 package com.qa.page.google;
 
+import com.microsoft.playwright.PlaywrightException;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import com.qa.kelvin.annotation.Page;
 import com.qa.page.Base;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,19 +16,24 @@ public class GooglePage extends Base {
     @Autowired
     private SearchResult searchResult;
 
-    @FindBy(xpath = "//button[2]")
-    private WebElement acceptAllButton;
-
     @Value("${application.url}")
     private String url;
 
-    public void goTo(){
-        this.driver.get(url);
+    public void goTo() {
+        page.navigate(url);
+        page.waitForLoadState();
     }
 
     public void clickAcceptAllButton() {
-        if (this.acceptAllButton.isDisplayed()){
-            this.acceptAllButton.click();
+        // Dismiss Bing's cookie consent banner if present (EU/regional variants).
+        try {
+            var btn = page.locator("#bnp_btn_accept, button:has-text('Accept'), button:has-text('Accepta')");
+            btn.first().waitFor(new com.microsoft.playwright.Locator.WaitForOptions()
+                    .setTimeout(5000)
+                    .setState(WaitForSelectorState.VISIBLE));
+            btn.first().click();
+            page.waitForLoadState();
+        } catch (PlaywrightException ignored) {
         }
     }
 
@@ -41,15 +45,12 @@ public class GooglePage extends Base {
         return searchResult;
     }
 
+    public void close() {
+        browserContext().close();
+    }
+
     @Override
     public boolean isAt() {
-        return this.searchComponent.isAt();
+        return searchComponent.isAt();
     }
-
-    public void close(){
-        this.driver.quit();
-    }
-
-
-
 }

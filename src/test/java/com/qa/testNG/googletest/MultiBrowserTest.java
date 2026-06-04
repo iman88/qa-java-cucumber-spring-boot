@@ -1,20 +1,34 @@
 package com.qa.testNG.googletest;
 
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
 import com.qa.TestNGTest;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.testng.annotations.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MultiBrowserTest extends TestNGTest {
 
     @Autowired
-    private ApplicationContext ctx;
+    private Playwright playwright;
 
     @Test
-    public void browserTest(){
-        this.ctx.getBean("chromeDriver", WebDriver.class).get("https://www.google.com");
-        this.ctx.getBean("firefoxDriver", WebDriver.class).get("https://www.yahoo.com");
+    public void multiBrowserTest() {
+        try (Browser chromium = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+             Browser firefox = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false))) {
+
+            Page chromePage = chromium.newPage();
+            Page firefoxPage = firefox.newPage();
+
+            chromePage.navigate("https://www.google.com");
+            firefoxPage.navigate("https://www.yahoo.com");
+
+            assertThat(chromePage.title()).containsIgnoringCase("google");
+            assertThat(firefoxPage.url()).containsIgnoringCase("yahoo");
+        }
     }
 
 }

@@ -2,22 +2,18 @@ package com.qa.page.window;
 
 import com.qa.kelvin.annotation.Window;
 import com.qa.page.Base;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 @Window("Page B")
-public class PageB  extends Base {
+public class PageB extends Base {
 
-    @FindBy(id = "area")
-    private WebElement textArea;
+    private static final String TEXT_AREA = "#area";
 
-    public void addToArea(final String msg){
-        this.textArea.sendKeys(msg);
+    public void addToArea(final String msg) {
+        page.locator(TEXT_AREA).pressSequentially(msg);
     }
 
     @Override
     public boolean isAt() {
-        return this.wait.until((d) -> this.textArea.isDisplayed());
+        return page.locator(TEXT_AREA).isVisible();
     }
-
 }

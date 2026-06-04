@@ -1,17 +1,16 @@
 package com.qa.kelvin.service;
 
-import com.github.javafaker.Faker;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import com.microsoft.playwright.Page;
+import jakarta.annotation.PostConstruct;
+import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Lazy
@@ -27,13 +26,17 @@ public class ScreenshotService {
     @Autowired
     private Faker faker;
 
+    @PostConstruct
+    public void init() throws IOException {
+        Files.createDirectories(this.path);
+    }
+
     public void takeScreenShot() throws IOException {
-        File sourceFile = this.ctx.getBean(TakesScreenshot.class).getScreenshotAs(OutputType.FILE);
-        FileCopyUtils.copy(sourceFile, this.path.resolve(faker.name().firstName() + ".png").toFile());
+        byte[] screenshot = ctx.getBean(Page.class).screenshot();
+        Files.write(this.path.resolve(faker.name().firstName() + ".png"), screenshot);
     }
 
-    public byte[] getScreenshot(){
-        return this.ctx.getBean(TakesScreenshot.class).getScreenshotAs(OutputType.BYTES);
+    public byte[] getScreenshot() {
+        return ctx.getBean(Page.class).screenshot();
     }
-
 }

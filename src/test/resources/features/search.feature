@@ -13,4 +13,4 @@ Feature: Google search
     | keyword     | count       |
     | selenium    | 2           |
     | java        | 5           |
-    | spring      | 12          |
+    | spring      | 3           |

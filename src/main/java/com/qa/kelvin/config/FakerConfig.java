@@ -1,6 +1,6 @@
 package com.qa.kelvin.config;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.qa.kelvin.annotation.LazyConfiguration;
 import org.springframework.context.annotation.Bean;
 

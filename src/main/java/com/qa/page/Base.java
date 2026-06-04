@@ -1,24 +1,29 @@
 package com.qa.page;
 
-import jakarta.annotation.PostConstruct;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 public abstract class Base {
 
     @Autowired
-    protected WebDriver driver;
+    protected Page page;
 
     @Autowired
-    protected WebDriverWait wait;
+    private ApplicationContext ctx;
 
-    @PostConstruct
-    private void init(){
-        PageFactory.initElements(this.driver, this);
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public Page defaultPage() {
+        return ctx.getBean(Page.class);
+    }
+
+    protected BrowserContext browserContext() {
+        return ctx.getBean(BrowserContext.class);
     }
 
     public abstract boolean isAt();
-
 }

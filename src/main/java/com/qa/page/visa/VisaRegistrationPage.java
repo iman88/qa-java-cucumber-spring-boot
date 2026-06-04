@@ -1,12 +1,11 @@
 package com.qa.page.visa;
 
+import com.microsoft.playwright.options.SelectOption;
 import com.qa.kelvin.annotation.Page;
 import com.qa.page.Base;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -16,83 +15,50 @@ public class VisaRegistrationPage extends Base {
 
     private static final Logger logger = LoggerFactory.getLogger(VisaRegistrationPage.class);
 
-    @FindBy(id ="first_4")
-    private WebElement firstName;
+    @Value("${visa.url}")
+    private String url;
 
-    @FindBy(id ="last_4")
-    private WebElement lastName;
-
-    @FindBy(id = "input_46")
-    private WebElement fromCountry;
-
-    @FindBy(id = "input_47")
-    private WebElement toCountry;
-
-    @FindBy(id = "input_24_month")
-    private WebElement month;
-
-    @FindBy(id = "input_24_day")
-    private WebElement day;
-
-    @FindBy(id = "input_24_year")
-    private WebElement year;
-
-    @FindBy(id = "input_6")
-    private WebElement email;
-
-    @FindBy(id = "input_27_phone")
-    private WebElement phone;
-
-    @FindBy(id = "input_45")
-    private WebElement comments;
-
-    @FindBy(id = "submitBtn")
-    private WebElement submit;
-
-    @FindBy(id = "requestnumber")
-    private WebElement requestNumber;
-
-    public void goTo(){
-        this.driver.get("https://vins-udemy.s3.amazonaws.com/sb/visa/udemy-visa.html");
+    public void goTo() {
+        page.navigate(url);
     }
 
-    public void setNames(String firstName, String lastName){
-        logger.info("Getting names : " + firstName);
-        this.firstName.sendKeys(firstName);
-        this.lastName.sendKeys(lastName);
+    public void setNames(String firstName, String lastName) {
+        logger.info("Setting names: {}", firstName);
+        page.locator("#first_4").fill(firstName);
+        page.locator("#last_4").fill(lastName);
     }
 
-    public void setCountryFromAndTo(String countryFrom, String countryTo){
-        new Select(this.fromCountry).selectByValue(countryFrom);
-        new Select(this.toCountry).selectByValue(countryTo);
+    public void setCountryFromAndTo(String countryFrom, String countryTo) {
+        page.locator("#input_46").selectOption(countryFrom);
+        page.locator("#input_47").selectOption(countryTo);
     }
 
-    public void setBirthDate(LocalDate localDate){
-        new Select(this.year).selectByVisibleText(String.valueOf(localDate.getYear()));
-        new Select(this.day).selectByVisibleText(String.valueOf(localDate.getDayOfMonth()));
-        new Select(this.month).selectByValue(localDate.getMonth().toString());
+    public void setBirthDate(LocalDate date) {
+        page.locator("#input_24_year").selectOption(new SelectOption().setLabel(String.valueOf(date.getYear())));
+        page.locator("#input_24_day").selectOption(new SelectOption().setLabel(String.valueOf(date.getDayOfMonth())));
+        page.locator("#input_24_month").selectOption(date.getMonth().toString());
     }
 
-    public void setContactDetails(String email, String phone){
-        this.email.sendKeys(email);
-        this.phone.sendKeys(phone);
+    public void setContactDetails(String email, String phone) {
+        page.locator("#input_6").fill(email);
+        page.locator("#input_27_phone").fill(phone);
     }
 
-    public void setComments(String comments){
-        this.comments.sendKeys(Objects.toString(comments, ""));
+    public void setComments(String comments) {
+        page.locator("#input_45").fill(Objects.toString(comments, ""));
     }
 
-    public void submit(){
-        this.submit.click();
+    public void submit() {
+        page.locator("#submitBtn").click();
     }
 
-    public String getConfirmationNumber(){
-        this.wait.until((d) -> this.requestNumber.isDisplayed());
-        return this.requestNumber.getText();
+    public String getConfirmationNumber() {
+        page.locator("#requestnumber").waitFor();
+        return page.locator("#requestnumber").textContent();
     }
 
     @Override
     public boolean isAt() {
-        return this.wait.until((d) -> this.firstName.isDisplayed());
+        return page.locator("#first_4").isVisible();
     }
 }

@@ -2,24 +2,20 @@ package com.qa.page.google;
 
 import com.qa.kelvin.annotation.PageFragment;
 import com.qa.page.Base;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
 
 @PageFragment
 public class SearchResult extends Base {
 
-    @FindBy(css = "div.g")
-    private List<WebElement> results;
+    // Bing organic search result items.
+    private static final String RESULTS = "li.b_algo";
 
-    public int getCount(){
-        return this.results.size();
+    public int getCount() {
+        return page.locator(RESULTS).count();
     }
 
     @Override
     public boolean isAt() {
-        return this.wait.until((d) -> !this.results.isEmpty());
+        page.locator("#b_results").waitFor();
+        return getCount() > 0;
     }
-
 }
